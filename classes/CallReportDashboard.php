@@ -46,16 +46,6 @@ class CallReportDashboard
             $where['AND']['time_start[<=]'] = $end;
         }
         return $db->select('calls_per_report', '*', $where);
-        $pdo = $this->db->getConnection();
-        $sql = "SELECT * FROM calls_per_report WHERE (from_dn = :user OR to_dn = :user) AND time_start >= :start";
-        $params = ['user' => $user, 'start' => $start];
-        if ($end) {
-            $sql .= " AND time_start <= :end";
-            $params['end'] = $end;
-        }
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function durationFromRow(array $row): int
@@ -163,19 +153,7 @@ class CallReportDashboard
         $map = $this->contactsMap();
         $rows = $this->queryCalls($user, $start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s'));
 
-        $stats = [
-            'kunden_total'     => 0,
-            'kunden_in'        => 0,
-            'kunden_out'       => 0,
-            'kandidaten_total' => 0,
-            'kandidaten_in'    => 0,
-            'kandidaten_out'   => 0,
-            'sonst_total'      => 0,
-            'sonst_in'         => 0,
-            'sonst_out'        => 0,
-            'total_in_time'    => 0,
-            'total_out_time'   => 0,
-        ];
+        $stats = self::emptyStats();
 
         foreach ($rows as $row) {
             $isOutgoing = $row['from_dn'] === $user;
@@ -184,19 +162,6 @@ class CallReportDashboard
             $contact = $map[$norm] ?? null;
             $type = $contact ? ($contact['company_name'] !== '' ? 'kunden' : 'kandidaten') : 'sonst';
             self::updateStats($stats, $row, $user, $type);
-
-            $type = $contact ? ($contact['company_name'] !== '' ? 'kunden' : 'kandidaten') : 'sonst';
-            $dir  = $isOutgoing ? 'out' : 'in';
-
-            $stats[$type . '_total']++;
-            $stats[$type . '_' . $dir]++;
-
-            $duration = self::durationFromRow($row);
-            if ($isOutgoing) {
-                $stats['total_out_time'] += $duration;
-            } else {
-                $stats['total_in_time'] += $duration;
-            }
         }
 
         return $stats;
@@ -241,19 +206,7 @@ class CallReportDashboard
             $monthEnd->format('Y-m-d H:i:s')
         );
 
-        $init = fn() => [
-            'kunden_total'      => 0,
-            'kunden_in'         => 0,
-            'kunden_out'        => 0,
-            'kandidaten_total'  => 0,
-            'kandidaten_in'     => 0,
-            'kandidaten_out'    => 0,
-            'sonst_total'       => 0,
-            'sonst_in'          => 0,
-            'sonst_out'         => 0,
-            'total_in_time'     => 0,
-            'total_out_time'    => 0,
-        ];
+        $init = fn() => self::emptyStats();
         $stats = [
             'today' => $init(),
             'week'  => $init(),
@@ -287,18 +240,14 @@ class CallReportDashboard
 
     public function getAverageCalls(string $user): array
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->prepare("
-            SELECT 
-                DATE(time_start) as tag, 
-                COUNT(*) as anzahl
-            FROM calls_per_report
-            WHERE from_dn = ?
-            GROUP BY DATE(time_start)
-        ");
-        $stmt->execute([$user]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $db = $this->db->getConnection();
+        $rows = $db->select('calls_per_report', [
+            'tag' => \Medoo\Medoo::raw('DATE(time_start)'),
+            'anzahl' => \Medoo\Medoo::raw('COUNT(*)')
+        ], [
+            'from_dn' => $user,
+            'GROUP' => \Medoo\Medoo::raw('DATE(time_start)')
+        ]);
 
         $tage = count($rows);
         $gesamt = array_sum(array_column($rows, 'anzahl'));
@@ -315,10 +264,8 @@ class CallReportDashboard
 
     public function getCallStatistics(string $user, int $year, int $week): array
     {
-        $pdo = $this->db->getConnection();
-
-        $stmt = $pdo->query("SELECT * FROM contact");
-        $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $db = $this->db->getConnection();
+        $contacts = $db->select('contact', '*');
 
         $nummernZuKontakt = [];
         foreach ($contacts as $contact) {
@@ -339,13 +286,13 @@ class CallReportDashboard
         $today = $endWeek->format('Y-m-d');
         $weekStr = sprintf('%04d-%02d', $year, $week);
 
-        $stmt = $pdo->prepare("SELECT * FROM calls_per_report WHERE (from_dn = :user OR to_dn = :user) AND time_start BETWEEN :start AND :end");
-        $stmt->execute([
-            'user' => $user,
-            'start' => $startWeek->format('Y-m-d H:i:s'),
-            'end'   => $endWeek->format('Y-m-d H:i:s')
+        $rows = $db->select('calls_per_report', '*', [
+            'AND' => [
+                'OR' => ['from_dn' => $user, 'to_dn' => $user],
+                'time_start[>=]' => $startWeek->format('Y-m-d H:i:s'),
+                'time_start[<=]' => $endWeek->format('Y-m-d H:i:s')
+            ]
         ]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $init = fn() => [
             'kunde_in' => 0,
