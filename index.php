@@ -134,16 +134,14 @@ if ($selectedUser) {
                             <th>Total Ausgehend (Zeit)</th>
                             <th>Kunden Eingehend</th>
                             <th>Kunden Ausgehend</th>
-                            <th>Kandidaten Eingehend</th>
-                            <th>Kandidaten Ausgehend</th>
-                            <th>Sonstiges Eingehend</th>
-                            <th>Sonstiges Ausgehend</th>
-                            <th>Total Eingehend (Zeit)</th>
-                            <th>Total Ausgehend (Zeit)</th>
                             <th>Kunden Eingehend (Zeit)</th>
                             <th>Kunden Ausgehend (Zeit)</th>
+                            <th>Kandidaten Eingehend</th>
+                            <th>Kandidaten Ausgehend</th>
                             <th>Kandidaten Eingehend (Zeit)</th>
                             <th>Kandidaten Ausgehend (Zeit)</th>
+                            <th>Sonstiges Eingehend</th>
+                            <th>Sonstiges Ausgehend</th>
                             <th>Sonstiges Eingehend (Zeit)</th>
                             <th>Sonstiges Ausgehend (Zeit)</th>
                         </tr>
@@ -161,16 +159,14 @@ if ($selectedUser) {
                                 <td><?= fmt_duration($currentStats[$key]['total_out_time']) ?></td>
                                 <td><?= $currentStats[$key]['kunden_in'] ?></td>
                                 <td><?= $currentStats[$key]['kunden_out'] ?></td>
-                                <td><?= $currentStats[$key]['kandidaten_in'] ?></td>
-                                <td><?= $currentStats[$key]['kandidaten_out'] ?></td>
-                                <td><?= $currentStats[$key]['sonst_in'] ?></td>
-                                <td><?= $currentStats[$key]['sonst_out'] ?></td>
-                                <td><?= fmt_duration($currentStats[$key]['total_in_time']) ?></td>
-                                <td><?= fmt_duration($currentStats[$key]['total_out_time']) ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['kunden_in_time']) ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['kunden_out_time']) ?></td>
+                                <td><?= $currentStats[$key]['kandidaten_in'] ?></td>
+                                <td><?= $currentStats[$key]['kandidaten_out'] ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['kandidaten_in_time']) ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['kandidaten_out_time']) ?></td>
+                                <td><?= $currentStats[$key]['sonst_in'] ?></td>
+                                <td><?= $currentStats[$key]['sonst_out'] ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['sonst_in_time']) ?></td>
                                 <td><?= fmt_duration($currentStats[$key]['sonst_out_time']) ?></td>
                             </tr>
@@ -220,16 +216,14 @@ if ($selectedUser) {
                             <th>Total Ausgehend (Zeit)</th>
                             <th>Kunden Eingehend</th>
                             <th>Kunden Ausgehend</th>
-                            <th>Kandidaten Eingehend</th>
-                            <th>Kandidaten Ausgehend</th>
-                            <th>Sonstiges Eingehend</th>
-                            <th>Sonstiges Ausgehend</th>
-                            <th>Total Eingehend (Zeit)</th>
-                            <th>Total Ausgehend (Zeit)</th>
                             <th>Kunden Eingehend (Zeit)</th>
                             <th>Kunden Ausgehend (Zeit)</th>
+                            <th>Kandidaten Eingehend</th>
+                            <th>Kandidaten Ausgehend</th>
                             <th>Kandidaten Eingehend (Zeit)</th>
                             <th>Kandidaten Ausgehend (Zeit)</th>
+                            <th>Sonstiges Eingehend</th>
+                            <th>Sonstiges Ausgehend</th>
                             <th>Sonstiges Eingehend (Zeit)</th>
                             <th>Sonstiges Ausgehend (Zeit)</th>
                         </tr>
@@ -247,16 +241,14 @@ if ($selectedUser) {
                                 <td><?= fmt_duration($row['stats']['total_out_time']) ?></td>
                                 <td><?= $row['stats']['kunden_in'] ?></td>
                                 <td><?= $row['stats']['kunden_out'] ?></td>
-                                <td><?= $row['stats']['kandidaten_in'] ?></td>
-                                <td><?= $row['stats']['kandidaten_out'] ?></td>
-                                <td><?= $row['stats']['sonst_in'] ?></td>
-                                <td><?= $row['stats']['sonst_out'] ?></td>
-                                <td><?= fmt_duration($row['stats']['total_in_time']) ?></td>
-                                <td><?= fmt_duration($row['stats']['total_out_time']) ?></td>
                                 <td><?= fmt_duration($row['stats']['kunden_in_time']) ?></td>
                                 <td><?= fmt_duration($row['stats']['kunden_out_time']) ?></td>
+                                <td><?= $row['stats']['kandidaten_in'] ?></td>
+                                <td><?= $row['stats']['kandidaten_out'] ?></td>
                                 <td><?= fmt_duration($row['stats']['kandidaten_in_time']) ?></td>
                                 <td><?= fmt_duration($row['stats']['kandidaten_out_time']) ?></td>
+                                <td><?= $row['stats']['sonst_in'] ?></td>
+                                <td><?= $row['stats']['sonst_out'] ?></td>
                                 <td><?= fmt_duration($row['stats']['sonst_in_time']) ?></td>
                                 <td><?= fmt_duration($row['stats']['sonst_out_time']) ?></td>
                             </tr>
