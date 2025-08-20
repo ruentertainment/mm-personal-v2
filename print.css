@@ -17,5 +17,12 @@
 
 .table {
     font-size: 0.65rem;
-    white-space: nowrap;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.table th,
+.table td {
+    white-space: normal;
+    word-break: break-word;
 }
