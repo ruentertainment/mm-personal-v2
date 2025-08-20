@@ -121,7 +121,8 @@ if ($selectedUser) {
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
                     <h4 class="card-title">Anrufstatistik der aktuellen Kalenderwoche: <?= $currentWeek ?>, <?= $currentYear ?></h4>
-                    <table class="table table-bordered mt-3">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm mt-3">
                         <thead class="table-light">
                         <tr>
                             <th>Zeitraum</th>
@@ -172,7 +173,8 @@ if ($selectedUser) {
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         <?php endif; ?>
@@ -203,7 +205,8 @@ if ($selectedUser) {
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h4 class="card-title">Anrufstatistik ab KW <?= $selectedWeek ?>, <?= $selectedYear ?> für <strong><?= htmlspecialchars($selectedUser) ?></strong></h4>
-                    <table class="table table-bordered mt-3">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm mt-3">
                         <thead class="table-light">
                         <tr>
                             <th>Kalenderwoche</th>
@@ -254,7 +257,8 @@ if ($selectedUser) {
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         <?php endif; ?>
