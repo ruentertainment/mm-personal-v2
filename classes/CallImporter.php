@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../helpers.php';
+
 class CallImporter
 {
     private DBHandler $db;
@@ -61,6 +63,13 @@ class CallImporter
                     if (count($fields) < 20) {
                         throw new RuntimeException('insufficient fields');
                     }
+
+                    // Normalize phone numbers before inserting
+                    $fields[7]  = normalizePhoneNumber($fields[7]);
+                    $fields[8]  = normalizePhoneNumber($fields[8]);
+                    $fields[11] = normalizePhoneNumber($fields[11]);
+                    $fields[13] = normalizePhoneNumber($fields[13]);
+
                     if (!$dryRun) {
                         $step = 'insert';
                         if (!$this->db->insertCall($fields)) {

@@ -21,4 +21,11 @@ assert($stats['total_out_time'] === 30);
 assert($stats['total_in_time'] === 120);
 
 
+// phone normalization tests
+assert(normalizePhoneNumber('+41791234567') === '+41791234567');
+assert(normalizePhoneNumber('0041791234567') === '+41791234567');
+assert(normalizePhoneNumber('0791234567') === '+41791234567');
+assert(normalizePhoneNumber('') === 'unknown');
+
 echo "All tests passed\n";
+
