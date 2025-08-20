@@ -1,0 +1,21 @@
+@page {
+    size: A4 landscape;
+    margin: 10mm;
+}
+
+.no-print {
+    display: none !important;
+}
+
+.container {
+    max-width: 100% !important;
+}
+
+.table-responsive {
+    overflow: visible !important;
+}
+
+.table {
+    font-size: 0.65rem;
+    white-space: nowrap;
+}

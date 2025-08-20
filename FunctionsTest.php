@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../helpers.php';
-require_once __DIR__ . '/../classes/CallReportDashboard.php';
+require_once __DIR__ . '/helpers.php';
+require_once __DIR__ . '/classes/CallReportDashboard.php';
 
 
 // fmt_duration tests
